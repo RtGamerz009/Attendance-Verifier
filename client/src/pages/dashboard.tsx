@@ -34,8 +34,8 @@ export default function Dashboard() {
             <span className="font-display font-bold text-lg tracking-tight text-white">VeriFace<span className="text-primary text-xs ml-1">ADMIN</span></span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="/"><a className="text-sm font-medium text-muted-foreground hover:text-white transition-colors">Home</a></Link>
-            <Link href="/attendance"><a className="text-sm font-medium text-muted-foreground hover:text-white transition-colors">Live View</a></Link>
+            <Link href="/" className="text-sm font-medium text-muted-foreground hover:text-white transition-colors">Home</Link>
+            <Link href="/attendance" className="text-sm font-medium text-muted-foreground hover:text-white transition-colors">Live View</Link>
             <div className="w-px h-4 bg-border"></div>
             <div className="flex items-center gap-2 text-sm text-white">
               <div className="w-2 h-2 rounded-full bg-success animate-pulse"></div>

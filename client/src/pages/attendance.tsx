@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { CameraFeed } from "@/components/camera-feed";
 import { Card } from "@/components/ui/card";
-import { Shield, ShieldAlert, CheckCircle, Smartphone, AlertTriangle } from "lucide-react";
+import { Shield, ShieldAlert, CheckCircle, Smartphone, AlertTriangle, User } from "lucide-react";
 
 type VerificationStep = 'init' | 'detecting' | 'liveness' | 'analyzing' | 'success' | 'spoof';
 
