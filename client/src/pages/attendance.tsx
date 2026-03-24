@@ -52,10 +52,10 @@ export default function Attendance() {
           clearInterval(interval);
           setConfidence(98.7);
           
-          // Randomly trigger a spoof for demonstration (20% chance)
-          if (Math.random() > 0.8) {
+          // Simulate higher likelihood of spoofing for demonstration
+          if (Math.random() > 0.4) {
             setStep('spoof');
-            addLog("CRITICAL: Display screen reflection detected (Spoof Attack).");
+            addLog("CRITICAL: Face tracking anomalies / screen spoof detected.");
           } else {
             setStep('success');
             addLog("Identity verified. Attendance logged.");
