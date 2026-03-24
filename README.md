@@ -1,14 +1,14 @@
 <div align="center">
 
-<!-- Banner Image Suggestion: A sleek, dark-mode futuristic map with glowing neon emergency routes, overlaying a high-tech hospital UI dashboard. (E.g. `![MedRoute AI Banner](docs/banner.png)`) -->
+<!-- Banner Image Suggestion: A modern, dark-mode dashboard interface with a glowing facial recognition scanning box overlapping an attendance grid. (E.g. `![Attendance Verifier Banner](docs/banner.png)`) -->
 
-# 🚑 MedRoute AI
+# 👁️ Attendance Verifier
 
-**Intelligent Emergency Route Optimization & Hospital Recommendation System**
+**Zero-Trust Smart Attendance Management & Identity Verification System**
 
 [![Status: Active](https://img.shields.io/badge/Status-Active-success.svg?style=for-the-badge)](#)
-[![Algorithm: A* / Dijkstra](https://img.shields.io/badge/Algorithm-A*/Dijkstra-blue.svg?style=for-the-badge)](#)
-[![AI Engine: Powered](https://img.shields.io/badge/AI_Engine-Powered-purple.svg?style=for-the-badge)](#)
+[![Validation: Liveness](https://img.shields.io/badge/Validation-Liveness_Detection-blue.svg?style=for-the-badge)](#)
+[![Framework: React/Vite](https://img.shields.io/badge/Framework-React/Vite-61DAFB.svg?style=for-the-badge)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=for-the-badge)](#)
 
 [Overview](#-overview) •
@@ -20,39 +20,39 @@
 
 <br>
 
-## ⚡ Overview: The Critical Seconds
+## ⚡ Overview: The Proxy Problem
 
-In emergency medical scenarios, time is the ultimate currency. MedRoute AI bridges the gap between chaotic real-world traffic patterns and hospital readiness, ensuring critical patients reach the right care facility via the fastest possible route.
+Traditional attendance systems rely on vulnerable processes—roll calls, ID cards, or simple PINs. These are easily exploited, leading to proxy attendance, human error, and massive time consumption. **Attendance Verifier** eliminates these vulnerabilities using multi-layer biometric validation.
 
-| ❌ The Problem | ✨ The MedRoute Solution |
+| ❌ The Problem | ✨ The Verifier Solution |
 | :--- | :--- |
-| **Blind Routing:** Ambulances rely on standard GPS, unaware of dynamic blockages or micro-delays. | **Smart Pathing:** Predicts and calculates the absolute fastest emergency corridor in real-time. |
-| **Facility Overload:** Patients arrive at hospitals lacking specific resources or available beds. | **Intelligent Matching:** Recommends destinations based on real-time hospital capacity and patient needs. |
-| **Human Error:** High-stress manual dispatching leads to sub-optimal decisions. | **Algorithmic Precision:** Instantaneous, data-driven decisions devoid of cognitive overload. |
+| **Proxy Attendance:** Students/employees marking peers present using shared IDs. | **Identity Validation:** Biometric verification ensures the physical presence of the individual. |
+| **Time Consumption:** Manual roll calls eat into productive operational or educational hours. | **Automated Logging:** Millisecond verification automatically logs timestamps without intervention. |
+| **Spoofing Attacks:** Holding up static photos or phone screens to trick standard cameras. | **Liveness Detection:** Challenge-response systems block static images and flat-surface reflection. |
 
 <br>
 
-## 🧠 Key Features
+## 🔥 Key Features
 
 <table>
   <tr>
     <td>
-      <h3>🏎️ Dynamic Smart Routing</h3>
-      <p>Continuous calculation of optimal emergency paths, factoring in real-time constraints, historical traffic density, and priority corridor access.</p>
+      <h3>🎯 Smart Verification  Engine</h3>
+      <p>Multi-step validation pipeline that analyzes visual input to confirm identity before allowing a database entry to be written.</p>
     </td>
     <td>
-      <h3>🏥 Predictive Hospital Matching</h3>
-      <p>Scores and recommends destination facilities based on current ER load, specific medical department availability, and proximity.</p>
+      <h3>👤 Identity Validation & Liveness</h3>
+      <p>Uses active challenge-response (e.g., "blink twice") and 3D depth analysis to distinguish a live human from a photograph or screen.</p>
     </td>
   </tr>
   <tr>
     <td>
-      <h3>⚡ Real-Time Decision Logic</h3>
-      <p>Instantly reroutes units when anomalies (accidents, closures) are detected, ensuring zero latency in critical pathing.</p>
+      <h3>⚡ Automated Logging</h3>
+      <p>Zero-click attendance tracking. Once verification is confirmed, timestamps, device IDs, and confidence scores are immediately synced.</p>
     </td>
     <td>
-      <h3>📊 Response Analytics</h3>
-      <p>Post-event telemetry and dispatch performance tracking to continuously refine algorithms and improve response metrics.</p>
+      <h3>📊 Real-Time Analytics Dashboard</h3>
+      <p>Administrator portal featuring live verification streams, spoof-attempt alerts, and systemic risk-level monitoring.</p>
     </td>
   </tr>
 </table>
@@ -63,32 +63,32 @@ In emergency medical scenarios, time is the ultimate currency. MedRoute AI bridg
 
 ```mermaid
 graph TD;
-    A[Emergency Trigger/Input] -->|Location & Patient Data| B(API Gateway)
+    A[Client Device / WebCam] -->|Live Video Feed| B(Processing Layer)
     
-    subgraph Core Intelligence Engine
-    B --> C{Decision Matrix}
-    C -->|Routing Req| D[Optimization Algorithm A* / Dijkstra]
-    C -->|Facility Req| E[Hospital Availability Index]
+    subgraph Verification Engine
+    B --> C{Face Detection}
+    C -->|Detected| D[Liveness Check Challenge]
+    D -->|Passed| E[Anti-Spoof Analysis]
+    E -->|Cleared| F[Identity Matching]
     end
     
-    subgraph Data Sources
-    F[(Traffic API)] -.-> D
-    G[(Hospital DB)] -.-> E
+    subgraph Data Layer
+    F -->|Match Confirmed| G[(Secure Database)]
+    E -->|Spoof Detected| H[Threat Log]
     end
     
-    D --> H[Route Synthesis]
-    E --> H
-    H --> I[Live Dispatch Dashboard / Output]
+    G --> I[Admin Dashboard]
+    H --> I
 ```
 
 <br>
 
-## 🔄 Execution Pipeline
+## 🔄 Working Flow
 
-> **1. Ingestion** ➔ Coordinates and trauma type received.<br>
-> **2. Analysis** ➔ AI evaluates local hospitals for capability and capacity.<br>
-> **3. Computation** ➔ Graph algorithms (A*/Dijkstra) compute micro-optimized routes.<br>
-> **4. Deployment** ➔ Live route and destination telemetry pushed to the active unit.<br>
+> **1. Capture** ➔ User positions face within the camera reticle.<br>
+> **2. Challenge** ➔ System prompts a random liveness challenge (e.g., subtle head movement).<br>
+> **3. Analysis** ➔ Engine checks for depth, edge anomalies, and reflections to prevent screen spoofing.<br>
+> **4. Record** ➔ Upon >95% confidence score, attendance is securely recorded. Multiple failures trigger an automatic ban.<br>
 
 <br>
 
@@ -96,36 +96,37 @@ graph TD;
 
 | Domain | Technologies |
 | :--- | :--- |
-| **Core Logic** | `Python` `C++` (for high-perf routing) |
-| **Algorithms** | `A* Search` `Dijkstra's` `Graph Theory` |
-| **Data & APIs** | `RESTful APIs` `GeoJSON` `PostGIS` |
-| **Processing** | `Pandas` `NumPy` `NetworkX` |
+| **Frontend** | `React` `Vite` `Tailwind CSS v4` `Shadcn/UI` |
+| **Camera/Media** | `react-webcam` `MediaDevices API` |
+| **Routing & State** | `Wouter` `React Hook Form` |
+| **Data Visualization** | `Recharts` `Lucide Icons` |
 
 <br>
 
-## 🧪 Core Intelligence
+## 🧪 Core Intelligence & Logic
 
-MedRoute AI does not rely on static maps. It builds a weighted graph of the urban environment where nodes are intersections and edges are road segments. 
+The system utilizes a staged confidence-scoring model to ensure high accuracy and security:
 
-* **Weight Calculation:** Edge weights are dynamically adjusted based on real-time traffic density, road type, and time of day.
-* **Pathfinding (A* / Dijkstra):** The system deploys optimized heuristic search algorithms to find the shortest path cost across the weighted graph, ensuring computation completes in milliseconds.
-* **Matching Heuristic:** Hospital selection uses a custom scoring formula: `Score = (W1 * Proximity) + (W2 * Bed Availability) + (W3 * Specialty Match)`.
+* **Bounding Box Tracking:** Initial logic ensures a face is centered, properly lit, and clear of occlusions.
+* **Liveness Validation:** Implements randomized physical challenges that a static image cannot replicate.
+* **Spoof Detection Rules:** Analyzes the video feed for flat edges, screen refresh rates (Moiré patterns), and unnatural lighting reflections to block digital proxy attempts.
+* **Three-Strike Protocol:** If a user fails the anti-spoofing checks three times consecutively, the system locks the session and dispatches an alert to administrators.
 
 <br>
 
 ## 📊 Impact
 
-* **Reduced Transit Time:** Shaving minutes off critical transit windows.
-* **Optimized ER Load:** Distributing emergency load evenly across regional medical infrastructure to prevent localized bottlenecks.
-* **Data-Driven Triage:** Removing guesswork from emergency response dispatching.
+* **100% Proxy Elimination:** Ensures attendance records represent actual physical presence.
+* **Frictionless Experience:** Reduces the time to mark attendance from minutes to seconds.
+* **Actionable Analytics:** Provides administrators with real-time insight into attendance trends and security anomalies.
 
 <br>
 
 ## 🚀 Future Scope
 
-* **V2X Integration:** Vehicle-to-Everything communication for preemptive traffic light control (Green Wave).
-* **Predictive AI Modeling:** Utilizing ML to forecast accident hotspots and pre-position emergency assets.
-* **Live IoT Telemetry:** Direct integration with onboard ambulance vitals monitors to update hospitals en route.
+* **Mobile App Integration:** Native iOS/Android clients utilizing internal FaceID/hardware sensors.
+* **Cloud Edge Processing:** Offloading heavy verification logic to edge servers to support lower-end devices.
+* **Advanced AI Recognition:** Integration with Python-based backend ML models (OpenCV/Dlib) for enterprise-scale face matching.
 
 <br>
 
@@ -133,7 +134,7 @@ MedRoute AI does not rely on static maps. It builds a weighted graph of the urba
 
 <div align="center">
   
-**Built for the future of emergency response.**
+**Securing operations, one verification at a time.**
 
 [![Star on GitHub](https://img.shields.io/badge/⭐_Star_Repository-grey?style=for-the-badge&logo=github)](#)
 
