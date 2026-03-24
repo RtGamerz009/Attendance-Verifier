@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { CameraFeed } from "@/components/camera-feed";
 import { Card } from "@/components/ui/card";
-import { Shield, ShieldAlert, CheckCircle, Smartphone, AlertTriangle, User } from "lucide-react";
+import { Shield, ShieldAlert, CheckCircle, Smartphone, AlertTriangle, User, Ban } from "lucide-react";
 
-type VerificationStep = 'init' | 'detecting' | 'liveness' | 'analyzing' | 'success' | 'spoof';
+type VerificationStep = 'init' | 'detecting' | 'liveness' | 'analyzing' | 'success' | 'spoof' | 'banned';
 
 const LIVENESS_CHALLENGES = [
   "Turn your head slightly left",
@@ -17,6 +17,7 @@ export default function Attendance() {
   const [challenge, setChallenge] = useState("");
   const [logs, setLogs] = useState<string[]>([]);
   const [confidence, setConfidence] = useState(0);
+  const [failedAttempts, setFailedAttempts] = useState(0);
   
   const addLog = (msg: string) => {
     setLogs(prev => [...prev, `[${new Date().toLocaleTimeString().split(' ')[0]}] ${msg}`]);
@@ -54,10 +55,20 @@ export default function Attendance() {
           
           // Simulate higher likelihood of spoofing for demonstration
           if (Math.random() > 0.4) {
-            setStep('spoof');
-            addLog("CRITICAL: Face tracking anomalies / screen spoof detected.");
+            const newFailedAttempts = failedAttempts + 1;
+            setFailedAttempts(newFailedAttempts);
+            
+            if (newFailedAttempts >= 3) {
+              setStep('banned');
+              addLog("CRITICAL: Maximum spoofing attempts reached. User BANNED.");
+              addLog("ALERT: Notification sent to System Administrator.");
+            } else {
+              setStep('spoof');
+              addLog(`CRITICAL: Static image / flat edge detected (Attempt ${newFailedAttempts}/3).`);
+            }
           } else {
             setStep('success');
+            setFailedAttempts(0); // Reset on success
             addLog("Identity verified. Attendance logged.");
           }
         } else {
@@ -65,11 +76,11 @@ export default function Attendance() {
         }
       }, 300);
     }
-  }, [step]);
+  }, [step, failedAttempts]);
 
   const getCameraStatus = () => {
     if (step === 'success') return 'success';
-    if (step === 'spoof') return 'error';
+    if (step === 'spoof' || step === 'banned') return 'error';
     if (step !== 'init') return 'scanning';
     return 'idle';
   };
@@ -81,7 +92,8 @@ export default function Attendance() {
       case 'liveness': return "Verifying liveness...";
       case 'analyzing': return "Anti-spoofing checks...";
       case 'success': return "John Doe - Verified";
-      case 'spoof': return "Spoofing Attempt Detected";
+      case 'spoof': return `Spoofing Attempt Detected (${failedAttempts}/3)`;
+      case 'banned': return "ACCOUNT BANNED";
       default: return "";
     }
   };
@@ -121,10 +133,23 @@ export default function Attendance() {
           <div className="mt-6 p-4 rounded-lg bg-destructive/10 border border-destructive/30 flex items-start gap-3 animate-in fade-in slide-in-from-bottom-4">
             <ShieldAlert className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
             <div>
-              <h4 className="text-destructive font-semibold text-sm">Access Denied</h4>
-              <p className="text-xs text-destructive/80 mt-1">Reason: Flat screen surface detected.</p>
+              <h4 className="text-destructive font-semibold text-sm">Spoofing Attempt Detected</h4>
+              <p className="text-xs text-destructive/80 mt-1">Reason: Static image edges / flat surface detected. Attempt {failedAttempts} of 3.</p>
             </div>
             <button onClick={() => { setStep('init'); setLogs([]); setConfidence(0); }} className="ml-auto text-xs underline text-destructive">Retry</button>
+          </div>
+        )}
+
+        {step === 'banned' && (
+          <div className="mt-6 p-4 rounded-lg bg-red-950/50 border border-red-500/50 flex items-start gap-3 animate-in zoom-in-95 duration-300">
+            <Ban className="w-8 h-8 text-red-500 shrink-0 mt-0.5 animate-pulse" />
+            <div>
+              <h4 className="text-red-500 font-bold text-sm tracking-widest uppercase">Action Blocked: Account Banned</h4>
+              <p className="text-xs text-red-400/90 mt-1 leading-relaxed">
+                Maximum allowed spoofing attempts (3/3) reached. This student account has been temporarily disabled. 
+                A security alert has been dispatched to the Administrator and Faculty.
+              </p>
+            </div>
           </div>
         )}
       </div>
@@ -136,14 +161,14 @@ export default function Attendance() {
         <Card className="p-5 border-border bg-card/50 backdrop-blur">
           <div className="flex justify-between items-end mb-2">
             <h3 className="text-sm font-mono text-muted-foreground">MATCH CONFIDENCE</h3>
-            <span className={`text-2xl font-bold font-mono ${confidence > 90 ? 'text-success' : confidence > 50 ? 'text-primary' : 'text-muted-foreground'}`}>
-              {confidence.toFixed(1)}%
+            <span className={`text-2xl font-bold font-mono ${confidence > 90 && step === 'success' ? 'text-success' : confidence > 50 && step !== 'spoof' && step !== 'banned' ? 'text-primary' : 'text-destructive'}`}>
+              {step === 'banned' ? '0.0' : confidence.toFixed(1)}%
             </span>
           </div>
           <div className="h-2 bg-secondary rounded-full overflow-hidden">
             <div 
-              className={`h-full transition-all duration-300 ${confidence > 90 ? 'bg-success' : confidence > 50 ? 'bg-primary' : 'bg-muted-foreground'}`}
-              style={{ width: `${confidence}%` }}
+              className={`h-full transition-all duration-300 ${confidence > 90 && step === 'success' ? 'bg-success' : confidence > 50 && step !== 'spoof' && step !== 'banned' ? 'bg-primary' : 'bg-destructive'}`}
+              style={{ width: step === 'banned' ? '100%' : `${confidence}%` }}
             ></div>
           </div>
         </Card>
@@ -166,7 +191,7 @@ export default function Attendance() {
               <span>3D Depth Analysis</span>
             </div>
             {['init', 'detecting'].includes(step) ? <span className="text-muted-foreground">Pending</span> : 
-             step === 'spoof' ? <span className="text-destructive text-xs font-mono">FAILED</span> :
+             step === 'spoof' || step === 'banned' ? <span className="text-destructive text-xs font-mono">FAILED</span> :
              <span className="text-success text-xs font-mono">VERIFIED</span>}
           </div>
 
@@ -182,10 +207,10 @@ export default function Attendance() {
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-2 text-white">
               <AlertTriangle className="w-4 h-4 text-muted-foreground" />
-              <span>Reflection / Screen Check</span>
+              <span>Reflection / Edge Check</span>
             </div>
             {['init', 'detecting', 'liveness', 'analyzing'].includes(step) ? <span className="text-muted-foreground">Analyzing</span> : 
-             step === 'spoof' ? <span className="text-destructive text-xs font-mono">DETECTED</span> :
+             step === 'spoof' || step === 'banned' ? <span className="text-destructive text-xs font-mono">DETECTED</span> :
              <span className="text-success text-xs font-mono">CLEAR</span>}
           </div>
         </Card>
@@ -197,11 +222,11 @@ export default function Attendance() {
           </div>
           <div className="p-4 flex-1 overflow-y-auto space-y-1 font-mono text-[10px] text-green-400/80">
             {logs.map((log, i) => (
-              <div key={i} className={`animate-in fade-in slide-in-from-bottom-1 ${log.includes('CRITICAL') ? 'text-destructive' : ''}`}>
+              <div key={i} className={`animate-in fade-in slide-in-from-bottom-1 ${log.includes('CRITICAL') || log.includes('ALERT') ? 'text-destructive font-bold' : ''}`}>
                 {log}
               </div>
             ))}
-            {step !== 'success' && step !== 'spoof' && (
+            {step !== 'success' && step !== 'spoof' && step !== 'banned' && (
               <div className="animate-pulse">_</div>
             )}
           </div>
